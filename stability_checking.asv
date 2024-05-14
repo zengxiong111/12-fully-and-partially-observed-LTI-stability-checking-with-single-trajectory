@@ -3,9 +3,9 @@ clear
 %m is the output dimension
 %n is the system state dimension
 %p is the control input dimension
-r = 0.99;
-v = 0.5;
-n = 4;      %n is the state dimension
+r = 0.7;
+v = 1;
+n = 2;      %n is the state dimension
 m = 1;      %m is the output dimension
 p = 1;      %p is the input dimension
 
@@ -16,7 +16,7 @@ for i = 1:5
     [A,B,C,D] = system_generation(r,v,m,n,p);
     Ob = obsv(A,C);
     Co = ctrb(A,B);
-    % check if the genrated system is controllable and observable
+    check if the genrated system is controllable and observable
     if(rank(Ob) == n & rank(Co) == n )
         break;
     end
@@ -25,15 +25,15 @@ for i = 1:5
     end
 end
 
-%counterexample: stable A whose spectral norm is bigger than 1.
+%counterexample: Jordan block
 %A = [1.03 0.1;0 0.5];
-svd(A'*A-eye(n))
-t=10;
+eig(A'*A-eye(n))
+t=3;
 temp = (A')^t*(A'*A-eye(n))*A^t;
 % svd(temp)
-% eig(temp)
-trace(temp)
-ones(n,1)'*temp*ones(n,1)
+ eig(temp)
+% trace(temp)
+% ones(n,1)'*temp*ones(n,1)
 %A = [1 -1;1 1];
 
 % eig(A^2)
