@@ -1,4 +1,4 @@
-What is the sufficient condition of the length of the trajectory to check the stability or instability of A?
+What is the sufficient condition of the length of the trajectory {x_t}_{t=0,1,...N} to check the stability or instability of A?
 
 1. First consider fully observed LTI system without noise: x_{t+1} =  A x_{t}
    
