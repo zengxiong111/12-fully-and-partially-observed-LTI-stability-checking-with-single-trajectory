@@ -3,13 +3,13 @@ clear
 %m is the output dimension
 %n is the system state dimension
 %p is the control input dimension
-r = 0.6;
+r = 0.9;
 v = 1;
 n = 2;      %n is the state dimension
 m = 1;      %m is the output dimension
 p = 1;      %p is the input dimension
 
-N=2000;
+N=20;
 T=3*n;
 
 for i = 1:5
