@@ -9,7 +9,7 @@ n = 2;      %n is the state dimension
 m = 1;      %m is the output dimension
 p = 1;      %p is the input dimension
 
-N=10000;
+N=200;
 T=3*n;
 
 % for i = 1:5
@@ -31,8 +31,9 @@ T=3*n;
 %A = [0.99 1;0 0.99];
 %A = [0.99 0;0 0.99];
 %A = [0.99 1;0 0.99];
-%A = [0.99 1 0;0 0.99 1;0 0 0.99];
-%A = [1.01 1 0;0 0.99 1;0 0 0.99];
+A = [0.99 1 0;0 0.99 1;0 0 0.99];
+%A = [0.99 0 0;0 0.99 0;0 0 0.99];
+% A = [1.01 1 0;0 0.99 1;0 0 0.99];
 norm(A)
 n=size(A,1);
 eig(A'*A-eye(n));
@@ -61,8 +62,8 @@ sigma_u_2 = 0;
 % sigma_w_2 = 0.001;
 % sigma_v_2 = 0.001;
 
-sigma_w_2 = 0.001;
-sigma_v_2 = 0.001;
+sigma_w_2 = 0.01;
+sigma_v_2 = 0.01;
 
 x_0 = ones(n,1);
 
@@ -110,5 +111,6 @@ set(gca,'FontSize',20)
 %Yingying's method
 
 %Ali's method
+
 
 
