@@ -9,7 +9,7 @@ n = 3;      %n is the state dimension
 m = 1;      %m is the output dimension
 p = 1;      %p is the input dimension
 
-N=1000;
+length=1400;
 T=3*n;
 
 % for i = 1:5
@@ -25,6 +25,13 @@ T=3*n;
 %     end
 % end
 
+N=5;
+A_all = zeros(n,n,N);
+A_all(:,:,1) = [1.01 0 0;0 0.99 0;0 0 0.99];
+A_all(:,:,2) = [0.99 1 0;0 0.99 1;0 0 0.99];
+A_all(:,:,3) = [1 1 0;0 0.99 1;0 0 0.99];
+A_all(:,:,4) = [0.99 0 0;0 0.99 0;0 0 0.99];
+A_all(:,:,5) = [1.01 1 0;0 0.99 1;0 0 0.99];
  
 
 %counterexample: Jordan block
@@ -33,14 +40,14 @@ T=3*n;
 %A = [0.99 1;0 0.99];
 %A = [0.99 0;0 0.99];
 %A = [0.99 1;0 0.99];
-%  A = [1.01 0 0;0 0.99 0;0 0 0.99];
+  A = [1.01 0 0;0 0.99 0;0 0 0.99];
 %A = [0.99 1 0;0 0.99 1;0 0 0.99];
 %A = [1 1 0;0 0.99 1;0 0 0.99];
 %A = [0.99 0 0;0 0.99 0;0 0 0.99];
 % A = [1.01 1 0;0 0.99 1;0 0 0.99];
-norm(A)
-vrho(A)
-eig(A)
+% norm(A)
+% vrho(A)
+% eig(A)
 n=size(A,1);
 % eig(A'*A-eye(n));
 % t=3;
@@ -72,38 +79,33 @@ sigma_v_2 = 0.00;
 
 x_0 = ones(n,1);
 
-[U,X,Y] = single_trajectory_generation(N,T,A,B,C,D,sigma_u_2,sigma_w_2,sigma_v_2,x_0);
+X_all = zeros(n,length,N);
 
-N_hat = size(X,2);
-time_index = 1:N_hat;
+[U,X_all,Y] = multiple_trajectories_generation(length,A_all,B,C,D,sigma_u_2,sigma_w_2,sigma_v_2,x_0);
 
-X_norm = zeros(N_hat,1);
-X_diff_norm = zeros(N_hat,1);
+% for i=1:N
+%     [U,X_all(:,:,i),Y] = single_trajectory_generation(length,A_all(:,:,i),B,C,D,sigma_u_2,sigma_w_2,sigma_v_2,x_0);
+% end
 
-Y_norm = zeros(N_hat,1);
+X_norm = zeros(length,N);
 
-for i =1:N_hat-1
-    X_diff_norm(i) = norm(X(:,i+1)) - norm(X(:,i));
-end
-
-X_diff_norm(N_hat) = X_diff_norm(N_hat-1);
-
-for i =1:N_hat
-    X_norm(i) = norm(X(:,i));
-    Y_norm(i) = norm(Y(:,i));
+for i =1:length
+    for j=1:N
+        X_norm(i,j) = norm(X_all(:,i,j));
+    end
 end
 
 % figure;
 % hold on;
-%plot(time_index,X_norm,time_index,X_diff_norm,'-x','LineWidth',3); % plot the tight bound eq (4) in the paper
-plot(time_index,X_norm,time_index(1:end-1),Y_norm(1:end-1),'-x','LineWidth',3); % plot the tight bound eq (4) in the paper
-%plot(time_index,X_diff_norm,'-x','LineWidth',3); % plot the tight bound eq (4) in the paper
+time_index = 1:length;
+plot(time_index,X_norm(:,2),time_index,X_norm(:,2),...
+    time_index,X_norm(:,3),time_index,X_norm(:,4),...
+    '-x','LineWidth',3); % plot the tight bound eq (4) in the paper
 
- %legend('robustness margin from Hinf','LMI sufficient [0,+m]','LMI sufficient [-m,+m]','controllability margin')
+
 %legend('||x(t)||_2','||x(t+1)||_2-||x(t)||_2')
-legend('||x_t||_2','||y_t||_2','Location','best')
-%legend('||x(t+1)||_2-||x(t)||_2')
-grid on;
+legend('unstable','stable','marginally stable','stable','Location','best')
+ grid on;
 ax = gca;
 ax.LineWidth = 2;
 ax.GridLineStyle = '--';
