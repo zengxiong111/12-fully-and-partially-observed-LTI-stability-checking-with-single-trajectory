@@ -9,7 +9,8 @@ n = 3;      %n is the state dimension
 m = 1;      %m is the output dimension
 p = 1;      %p is the input dimension
 
-length=1000;
+length=105
+0;
 T=3*n;
 
 % for i = 1:5
@@ -45,9 +46,9 @@ A_all(:,:,5) = [1.01 1 0;0 0.99 1;0 0 0.99];
 %A = [1 1 0;0 0.99 1;0 0 0.99];
 %A = [0.99 0 0;0 0.99 0;0 0 0.99];
 % A = [1.01 1 0;0 0.99 1;0 0 0.99];
-norm(A)
-vrho(A)
-eig(A)
+% norm(A)
+% vrho(A)
+% eig(A)
 n=size(A,1);
 % eig(A'*A-eye(n));
 % t=3;
@@ -74,36 +75,38 @@ sigma_u_2 = 0;
 % sigma_w_2 = 0.001;
 % sigma_v_2 = 0.001;
 
-sigma_w_2 = 0.00;
-sigma_v_2 = 0.00;
+sigma_w_2 = 0.01;
+sigma_v_2 = 0.01;
 
-x_0 = ones(n,1);
+x_0 = 10*ones(n,1);
 
 X_all = zeros(n,length,N);
 
-for i=1:N
-    [U,X_all(:,:,i),Y] = single_trajectory_generation(length,T,A_all(:,:,i),B,C,D,sigma_u_2,sigma_w_2,sigma_v_2,x_0);
-end
+[U,X_all,Y] = multiple_trajectories_generation(length,A_all,B,C,D,sigma_u_2,sigma_w_2,sigma_v_2,x_0);
 
-time_index = 1:length;
+% for i=1:N
+%     [U,X_all(:,:,i),Y] = single_trajectory_generation(length,A_all(:,:,i),B,C,D,sigma_u_2,sigma_w_2,sigma_v_2,x_0);
+% end
 
 X_norm = zeros(length,N);
 
-Y_norm = zeros(length,N);
-
-for i =1:N_hat
-    X_norm(i) = norm(X(:,i));
-    Y_norm(i) = norm(Y(:,i));
+for i =1:length
+    for j=1:N
+        X_norm(i,j) = norm(X_all(:,i,j));
+    end
 end
 
 % figure;
 % hold on;
-plot(time_index,X_norm,time_index(1:end-1),Y_norm(1:end-1),'-x','LineWidth',3); % plot the tight bound eq (4) in the paper
+time_index = 1:length;
+plot(time_index,X_norm(:,1),time_index,X_norm(:,2),...
+    time_index,X_norm(:,3),time_index,X_norm(:,4),...
+    '-x','LineWidth',3); % plot the tight bound eq (4) in the paper
+
 
 %legend('||x(t)||_2','||x(t+1)||_2-||x(t)||_2')
-legend('||x_t||_2','||y_t||_2','||x_t||_2','||y_t||_2','Location','best')
-%legend('||x(t+1)||_2-||x(t)||_2')
-grid on;
+legend('unstable','stable','marginally stable','stable','Location','best')
+ grid on;
 ax = gca;
 ax.LineWidth = 2;
 ax.GridLineStyle = '--';

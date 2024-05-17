@@ -9,7 +9,8 @@ n = 3;      %n is the state dimension
 m = 1;      %m is the output dimension
 p = 1;      %p is the input dimension
 
-length=1400;
+length=105
+0;
 T=3*n;
 
 % for i = 1:5
@@ -74,10 +75,10 @@ sigma_u_2 = 0;
 % sigma_w_2 = 0.001;
 % sigma_v_2 = 0.001;
 
-sigma_w_2 = 0.00;
-sigma_v_2 = 0.00;
+sigma_w_2 = 0.01;
+sigma_v_2 = 0.01;
 
-x_0 = ones(n,1);
+x_0 = 10*ones(n,1);
 
 X_all = zeros(n,length,N);
 
@@ -98,7 +99,7 @@ end
 % figure;
 % hold on;
 time_index = 1:length;
-plot(time_index,X_norm(:,2),time_index,X_norm(:,2),...
+plot(time_index,X_norm(:,1),time_index,X_norm(:,2),...
     time_index,X_norm(:,3),time_index,X_norm(:,4),...
     '-x','LineWidth',3); % plot the tight bound eq (4) in the paper
 
