@@ -9,7 +9,7 @@ n = 3;      %n is the state dimension
 m = 1;      %m is the output dimension
 p = 1;      %p is the input dimension
 
-N=1000;
+N=20;
 T=3*n;
 
 % for i = 1:5
@@ -38,6 +38,8 @@ T=3*n;
 %A = [1 1 0;0 0.99 1;0 0 0.99];
 %A = [0.99 0 0;0 0.99 0;0 0 0.99];
 % A = [1.01 1 0;0 0.99 1;0 0 0.99];
+%A = [1 1 0;0 1 1;0 0 0.1];
+A = [1 1;0 1];
 norm(A)
 vrho(A)
 eig(A)
@@ -70,9 +72,9 @@ sigma_u_2 = 0;
 sigma_w_2 = 0.00;
 sigma_v_2 = 0.00;
 
-x_0 = ones(n,1);
+x_0 = 5*ones(n,1);
 
-[U,X,Y] = single_trajectory_generation(N,T,A,B,C,D,sigma_u_2,sigma_w_2,sigma_v_2,x_0);
+[U,X,Y] = single_trajectory_generation(N,A,B,C,D,sigma_u_2,sigma_w_2,sigma_v_2,x_0);
 
 N_hat = size(X,2);
 time_index = 1:N_hat;
