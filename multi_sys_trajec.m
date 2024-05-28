@@ -9,7 +9,7 @@ n = 3;      %n is the state dimension
 m = 1;      %m is the output dimension
 p = 1;      %p is the input dimension
 
-length=105
+length=1000;
 0;
 T=3*n;
 
@@ -78,15 +78,12 @@ sigma_u_2 = 0;
 sigma_w_2 = 0.01;
 sigma_v_2 = 0.01;
 
+
 x_0 = 10*ones(n,1);
 
 X_all = zeros(n,length,N);
 
 [U,X_all,Y] = multiple_trajectories_generation(length,A_all,B,C,D,sigma_u_2,sigma_w_2,sigma_v_2,x_0);
-
-% for i=1:N
-%     [U,X_all(:,:,i),Y] = single_trajectory_generation(length,A_all(:,:,i),B,C,D,sigma_u_2,sigma_w_2,sigma_v_2,x_0);
-% end
 
 X_norm = zeros(length,N);
 
